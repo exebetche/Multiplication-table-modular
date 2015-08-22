@@ -161,7 +161,6 @@ canvas{
 			
 		function change_value(){
 			animator.table_start = parseFloat(table_start.value);
-			animator.table = animator.table_start;
 			animator.table_end = parseFloat(table_end.value);
 			animator.table_step = parseFloat(table_step.value);
 			animator.mod = parseInt(mod.value);
@@ -170,7 +169,19 @@ canvas{
 			animator.init();
 		}		
 		
-		update.onclick = change_value;
+		update.onclick = function(){
+			if(animator.stopped){
+				animator.stopped = false;
+				animate.innerHTML = "Stop";
+				update.innerHTML = "Update";
+				change_value();
+				animator.animate();
+			}
+			else{
+				change_value();
+			}
+			
+		}
 		
 		
 		animate.onclick = function(){
@@ -178,14 +189,15 @@ canvas{
 				animator.stopped = false;
 				animate.innerHTML = "Stop";
 				update.style.display = "inline";
+				update.innerHTML = "Update";
 				change_value();
-				animator.init();
+				animator.table = animator.table_start;
 				animator.animate();
 			}
 			else{
 				animator.stopped = true;
-				animate.innerHTML = "Animate";
-				update.style.display = "none";
+				animate.innerHTML = "Restart";
+				update.innerHTML = "Continue";
 			}
 		}
 	}
